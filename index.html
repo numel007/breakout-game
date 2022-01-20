@@ -40,6 +40,9 @@
     let brickPadding = 10;
     let brickOffsetTop = 30;
     let brickOffsetLeft = 30;
+    let row0Score = 50
+    let row1Score = 20
+    let row2Score = 10
     let score = 0;
     let lives = 3;
 
@@ -73,7 +76,11 @@
             bricks[c][r].y = brickY;
             ctx.beginPath();
             ctx.rect(brickX, brickY, brickWidth, brickHeight);
-            ctx.fillStyle = "#0095DD";
+            if (r % 2 == 1) {
+              ctx.fillStyle = 'red';
+            } else {
+              ctx.fillStyle = "green";
+            }
             ctx.fill();
             ctx.closePath();
           }
@@ -176,9 +183,16 @@
             if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
               dy = -dy;
               b.status = 0;
-              score++;
 
-              if (score == brickRowCount * brickColumnCount) {
+              if (r == 2) {
+                score += row2Score
+              } else if (r == 1) {
+                score += row1Score
+              } else if (r == 0) {
+                score += row0Score
+              }
+
+              if (score == ((brickColumnCount * row0Score) + (brickColumnCount * row1Score) + (brickColumnCount * row2Score))) {
                 alert("Game complete")
                 document.location.reload()
               }
