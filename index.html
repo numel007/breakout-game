@@ -61,9 +61,14 @@
         dx = -dx;
       }
 
-      if (y + dy > canvas.height || y + dy < 0) {
+      if (y + dy < ballRadius) {
         dy = -dy;
+      } else if (y + dy > canvas.height - ballRadius) {
+        alert("GAME OVER");
+        document.location.reload();
+        clearInterval(interval); // Needed for Chrome to end game
       }
+
 
       if (rightPressed) {
         paddleX += 7
@@ -97,7 +102,7 @@
     }
     let rightPressed = false
     let leftPressed = false
-    setInterval(draw, 10)
+    let interval = setInterval(draw, 10)
 
     document.addEventListener("keydown", keyDownHandler, false)
     document.addEventListener("keyup", keyUpHandler, false)
