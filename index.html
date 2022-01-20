@@ -40,7 +40,8 @@
     let brickPadding = 10;
     let brickOffsetTop = 30;
     let brickOffsetLeft = 30;
-    let score = 0
+    let score = 0;
+    let lives = 3;
 
     var bricks = [];
     for (var c = 0; c < brickColumnCount; c++) {
@@ -48,6 +49,12 @@
       for (var r = 0; r < brickRowCount; r++) {
         bricks[c][r] = { x: 0, y: 0, status: 1 };
       }
+    }
+
+    const drawLives = () => {
+      ctx.font = "16px Arial";
+      ctx.fillStyle = "#0095DD";
+      ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
     }
 
     const drawScore = () => {
@@ -93,6 +100,7 @@
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
+      drawLives()
       drawBricks()
       drawBall()
       drawPaddle()
@@ -111,9 +119,18 @@
         if (x > paddleX && x < paddleX + paddleWidth) {
           dy = -dy
         } else {
-          alert("GAME OVER");
-          document.location.reload();
-          clearInterval(interval);
+          lives--;
+          if (!lives) {
+            alert("GAME OVER");
+            document.location.reload();
+          }
+          else {
+            x = canvas.width / 2;
+            y = canvas.height - 30;
+            dx = 2;
+            dy = -2;
+            paddleX = (canvas.width - paddleWidth) / 2;
+          }
         }
       }
 
@@ -130,6 +147,8 @@
           paddleX = 0;
         }
       }
+
+      requestAnimationFrame(draw)
     }
     const keyDownHandler = (e) => {
       if (e.key == "Right" || e.key == "ArrowRight") {
@@ -162,7 +181,6 @@
               if (score == brickRowCount * brickColumnCount) {
                 alert("Game complete")
                 document.location.reload()
-                clearInterval(interval)
               }
             }
           }
@@ -179,7 +197,7 @@
 
     let rightPressed = false
     let leftPressed = false
-    let interval = setInterval(draw, 10)
+    draw()
 
     document.addEventListener("keydown", keyDownHandler, false)
     document.addEventListener("mousemove", mouseMoveHandler, false);
