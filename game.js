@@ -44,20 +44,16 @@ class Game {
     function keyDownHandler(e) {
       if (e.key === 'Right' || e.key === 'ArrowRight') {
         this.rightPressed = true;
-        // console.log(`Right: ${this.rightPressed}`);
       } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
         this.leftPressed = true;
-        // console.log(`Left: ${this.leftPressed}`);
       }
     }
 
     function keyUpHandler(e) {
       if (e.key === 'Right' || e.key === 'ArrowRight') {
         this.rightPressed = false;
-        // console.log(`Right: ${this.rightPressed}`);
       } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
         this.leftPressed = false;
-        // console.log(`Left: ${this.leftPressed}`);
       }
     }
 
@@ -68,8 +64,20 @@ class Game {
     //   }
     // }
 
-    document.addEventListener('keydown', keyDownHandler, false);
-    document.addEventListener('keyup', keyUpHandler, false);
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        keyDownHandler(e);
+      },
+      false
+    );
+    document.addEventListener(
+      'keyup',
+      (e) => {
+        keyUpHandler(e);
+      },
+      false
+    );
     // document.addEventListener('mousemove', mouseMoveHandler, false);
 
     for (let c = 0; c < brickColumnCount; c += 1) {
@@ -170,6 +178,7 @@ class Game {
     }
 
     if (this.rightPressed) {
+      console.log('Right pressed. Move paddle.');
       this.paddle.x += 7;
       if (this.paddle.x + this.paddle.width > this.canvas.width) {
         this.paddle.x = this.canvas.width - this.paddle.width;
