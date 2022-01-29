@@ -106,23 +106,23 @@ class Game {
     }
   }
 
+  keyDownHandler(e) {
+    if (e.key === 'Right' || e.key === 'ArrowRight') {
+      this.rightPressed = true;
+    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+      this.leftPressed = true;
+    }
+  }
+
+  keyUpHandler(e) {
+    if (e.key === 'Right' || e.key === 'ArrowRight') {
+      this.rightPressed = false;
+    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+      this.leftPressed = false;
+    }
+  }
+
   runGame() {
-    function keyDownHandler(e) {
-      if (e.key === 'Right' || e.key === 'ArrowRight') {
-        this.rightPressed = true;
-      } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
-        this.leftPressed = true;
-      }
-    }
-
-    function keyUpHandler(e) {
-      if (e.key === 'Right' || e.key === 'ArrowRight') {
-        this.rightPressed = false;
-      } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
-        this.leftPressed = false;
-      }
-    }
-
     // function mouseMoveHandler(e) {
     //   const relativeX = e.clientX - this.canvas.offsetLeft;
     //   if (relativeX > 0 && relativeX < this.canvas.width) {
@@ -130,8 +130,8 @@ class Game {
     //   }
     // }
 
-    document.addEventListener('keydown', keyDownHandler, false);
-    document.addEventListener('keyup', keyUpHandler, false);
+    document.addEventListener('keydown', this.keyDownHandler, false);
+    document.addEventListener('keyup', this.keyUpHandler, false);
     // document.addEventListener('mousemove', mouseMoveHandler, false);
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
