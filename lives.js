@@ -1,7 +1,7 @@
 import Sprite from './sprite.js';
 
 class Lives extends Sprite {
-  constructor(width, color, lives = 3, font = '16px Arial') {
+  constructor(width, color = 'black', lives = 3, font = '16px Arial') {
     super();
     this.width = width;
     this.lives = lives;

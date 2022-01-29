@@ -25,7 +25,7 @@ class Game {
     this.document = document;
     this.ball = new Ball(canvas.width / 2, canvas.height - 30, ballRadius);
     this.paddle = new Paddle((canvas.width - 75) / 2, canvas.height - 10);
-    this.score = new Score(0, 0, 'red', 0);
+    this.score = new Score();
     this.lives = new Lives(canvas.width);
     this.brickRowCount = brickRowCount;
     this.brickColumnCount = brickColumnCount;
@@ -41,7 +41,36 @@ class Game {
     this.leftPressed = false;
     this.rightPressed = false;
 
-    console.log(this.ctx);
+    function keyDownHandler(e) {
+      if (e.key === 'Right' || e.key === 'ArrowRight') {
+        this.rightPressed = true;
+        // console.log(`Right: ${this.rightPressed}`);
+      } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+        this.leftPressed = true;
+        // console.log(`Left: ${this.leftPressed}`);
+      }
+    }
+
+    function keyUpHandler(e) {
+      if (e.key === 'Right' || e.key === 'ArrowRight') {
+        this.rightPressed = false;
+        // console.log(`Right: ${this.rightPressed}`);
+      } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+        this.leftPressed = false;
+        // console.log(`Left: ${this.leftPressed}`);
+      }
+    }
+
+    // function mouseMoveHandler(e) {
+    //   const relativeX = e.clientX - this.canvas.offsetLeft;
+    //   if (relativeX > 0 && relativeX < this.canvas.width) {
+    //     this.paddle.x = relativeX - this.paddle.width / 2;
+    //   }
+    // }
+
+    document.addEventListener('keydown', keyDownHandler, false);
+    document.addEventListener('keyup', keyUpHandler, false);
+    // document.addEventListener('mousemove', mouseMoveHandler, false);
 
     for (let c = 0; c < brickColumnCount; c += 1) {
       this.bricks[c] = [];
@@ -106,34 +135,7 @@ class Game {
     }
   }
 
-  keyDownHandler(e) {
-    if (e.key === 'Right' || e.key === 'ArrowRight') {
-      this.rightPressed = true;
-    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
-      this.leftPressed = true;
-    }
-  }
-
-  keyUpHandler(e) {
-    if (e.key === 'Right' || e.key === 'ArrowRight') {
-      this.rightPressed = false;
-    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
-      this.leftPressed = false;
-    }
-  }
-
   runGame() {
-    // function mouseMoveHandler(e) {
-    //   const relativeX = e.clientX - this.canvas.offsetLeft;
-    //   if (relativeX > 0 && relativeX < this.canvas.width) {
-    //     this.paddle.x = relativeX - this.paddle.width / 2;
-    //   }
-    // }
-
-    document.addEventListener('keydown', this.keyDownHandler, false);
-    document.addEventListener('keyup', this.keyUpHandler, false);
-    // document.addEventListener('mousemove', mouseMoveHandler, false);
-
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.collisionDetection();
     this.drawBricks();
@@ -179,7 +181,9 @@ class Game {
       }
     }
 
-    requestAnimationFrame(this.runGame);
+    requestAnimationFrame(() => {
+      this.runGame();
+    });
   }
 }
 
