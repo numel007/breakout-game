@@ -41,44 +41,28 @@ class Game {
     this.leftPressed = false;
     this.rightPressed = false;
 
-    function keyDownHandler(e) {
-      if (e.key === 'Right' || e.key === 'ArrowRight') {
-        this.rightPressed = true;
-      } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
-        this.leftPressed = true;
-      }
-    }
-
-    function keyUpHandler(e) {
-      if (e.key === 'Right' || e.key === 'ArrowRight') {
-        this.rightPressed = false;
-      } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
-        this.leftPressed = false;
-      }
-    }
-
-    // function mouseMoveHandler(e) {
-    //   const relativeX = e.clientX - this.canvas.offsetLeft;
-    //   if (relativeX > 0 && relativeX < this.canvas.width) {
-    //     this.paddle.x = relativeX - this.paddle.width / 2;
-    //   }
-    // }
-
     document.addEventListener(
       'keydown',
       (e) => {
-        keyDownHandler(e);
+        this.keyDownHandler(e);
       },
       false
     );
     document.addEventListener(
       'keyup',
       (e) => {
-        keyUpHandler(e);
+        this.keyUpHandler(e);
       },
       false
     );
-    // document.addEventListener('mousemove', mouseMoveHandler, false);
+
+    document.addEventListener(
+      'mousemove',
+      (e) => {
+        this.mouseMoveHandler(e);
+      },
+      false
+    );
 
     for (let c = 0; c < brickColumnCount; c += 1) {
       this.bricks[c] = [];
@@ -89,6 +73,29 @@ class Game {
           this.bricks[c][r] = new Brick(0, 0, true, undefined, undefined, 'red');
         }
       }
+    }
+  }
+
+  keyDownHandler(e) {
+    if (e.key === 'Right' || e.key === 'ArrowRight') {
+      this.rightPressed = true;
+    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+      this.leftPressed = true;
+    }
+  }
+
+  keyUpHandler(e) {
+    if (e.key === 'Right' || e.key === 'ArrowRight') {
+      this.rightPressed = false;
+    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+      this.leftPressed = false;
+    }
+  }
+
+  mouseMoveHandler(e) {
+    const relativeX = e.clientX - this.canvas.offsetLeft;
+    if (relativeX > 0 && relativeX < this.canvas.width) {
+      this.paddle.x = relativeX - this.paddle.width / 2;
     }
   }
 
@@ -178,7 +185,6 @@ class Game {
     }
 
     if (this.rightPressed) {
-      console.log('Right pressed. Move paddle.');
       this.paddle.x += 7;
       if (this.paddle.x + this.paddle.width > this.canvas.width) {
         this.paddle.x = this.canvas.width - this.paddle.width;
